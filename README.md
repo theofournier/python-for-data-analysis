@@ -7,7 +7,7 @@ Dans le cadre du cours Python for Data Analysis, il est demandé de faire une an
 L'analyse consiste à visualiser, préparer et modéliser les données ainsi qu'une optimisation des performances des modèles.
 
 
-## Base de données
+# Base de données
 ### Pen-Based Recognition of Handwritten Digits
 
 C'est une collection de 250 caractères par 44 écrivains. 
@@ -27,10 +27,8 @@ Ainsi le vecteur à une taille de 2*T, 2 fois le nombre de points rééchantillo
 Ils ont fait un rééchantillonnage spatial avec T=8.
 
 Finalement, le dataset est composé de 16 attributs en entrés de type entiers entre 0 et 100 et de 1 attribut de classe qui le code de classe compris entre 0 et 9.
-La cible à prédire est donc un code de classe.
-Les données en entrées sont déjà préparés pour appliquer un modèle de machine learning.
 
-	Nombre d'instance et distribution de classe : 
+Nombre d'instance et distribution de classe : 
 		Training dataset :  7 494 lignes
 			Classe:
 				0:  780
@@ -58,16 +56,63 @@ Les données en entrées sont déjà préparés pour appliquer un modèle de mac
 				9:  336
 
 
-	Précision sur le jeu de test avec un k-nn utilisant la distance Euclidienne comme metric obtenu par les créateurs :
+# Objectifs
+La cible à prédire est donc un code de classe.
+Les données en entrées sont déjà préparés pour appliquer un modèle de machine learning.
+Les features n’ont pas de signification seules. Elles doivent être traitées ensemble. C’est donc compliqué de faire une visualisation des données compréhensive. Nous allons pouvoir par exemple montrer la répartition de chaque feature.
+Le dataset est déjà prêt pour l’utilisation de modèles de machine learning. Il n’y a donc pas de préparation à faire.
+Nous allons appliqué différents modèles de machine learning, comme le K-NN, Random Forest et du Deep Learning avec Keras.
+Et enfin nous optimiserons les performances grâces à des courbes ROC et des matrices de corrélations.
 
-		 k =  1 : 97.74
-		 k =  2 : 97.37
-		 k =  3 : 97.80
-		 k =  4 : 97.66
-		 k =  5 : 97.60
-		 k =  6 : 97.57
-		 k =  7 : 97.54
-		 k =  8 : 97.54
-		 k =  9 : 97.46
-		 k = 10 : 97.48
-		 k = 11 : 97.34
+
+# Méthodologie
+
+## Importation des données
+
+Nous utilisons la librairie Pandas pour importer nos csv de train et test dans des Data Frame.
+Il n'y a aucun NA dans les données et ils sont composé uniquement d'entier.
+
+Nous fusionnons les dataset de train et test pour faire la visualisation des données et ainsi avoir plus de données à traiter.
+
+
+## Visualisation des données
+### Répartition des classes
+
+![Répartition des classes](/img/repartition_des_classes.png)
+
+Nous observons que toutes les classes sont homogénétiquement répartie ce qui permettra d'avoir des résultats plus efficace lors des modèles de prédiction.
+
+
+### Répartition des valeurs
+Ce graphique montre pour chaque features, les valeurs d'entiers sachant qu'ils sont tous compris entre 0 et 100.
+
+![Répartition des valeurs](/img/repartition_des_valeurs.png)
+Nous observons une que les valeurs sont en plus grand nombre aux extrêmes ainsi qu'au milieu.
+
+
+## Modélisation
+On sépare les données en features et prédiction.
+
+### K-NN
+
+Dans un premier nous déterminons la meilleur valeur de K voisinage.
+![K-NN Meilleurs K](/img/k_nn.png)
+Nous trouvons un K=3 pour une précision de 0.978.
+
+
+### Random Forest
+Dans un premier nous déterminons la meilleur valeur de N estimators.
+![Random Forest Meilleurs N](/img/random_forest.png)
+Nous trouvons un K=56 pour une précision de 0.967.
+
+
+### Deep Learning
+Notre modèle Sequential est composé de deux couches Dense avec activation softmax.
+L'erreur est déterminer par un categorical_crossentropy.
+On obtient une précision de 0.397
+
+
+# Conclusion
+Grâce à nos observations, nous pouvons en conclure que notre modèle K-NN est performant, et il est proche des résultats obtenus par les créateurs du dataset.
+
+Les données ne permettent pas d’exploration approfondie. Notamment, ils n’est pas possible de supprimer ou d’ajouter des features car elles sont dépendante les unes des autres du caractère du quel ils proviennents.
